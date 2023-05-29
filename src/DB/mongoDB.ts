@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
-import { Product } from "../types-interfaces";
+import { IProduct } from "../types-interfaces";
 
 export const mongoClient: typeof MongoClient = new MongoClient(
   `${process.env.CONNECTION_STRING_MONGODB}`
@@ -8,8 +8,8 @@ export const mongoClient: typeof MongoClient = new MongoClient(
 
 export const getAllProducts = async (): // skip: number,
 // limit: number
-Promise<Product[]> => {
-  const products: Product[] = await mongoClient
+Promise<IProduct[]> => {
+  const products: IProduct[] = await mongoClient
     .db(`${process.env.MONGODB_DB}`)
     .collection(`${process.env.MONGODB_COLLECTION}`)
     .find()
@@ -20,8 +20,8 @@ Promise<Product[]> => {
   return products;
 };
 
-export const getProduct = async (productId: string): Promise<Product> => {
-  const product: Product = await mongoClient
+export const getProduct = async (productId: string): Promise<IProduct> => {
+  const product: IProduct = await mongoClient
     .db(`${process.env.MONGODB_DB}`)
     .collection(`${process.env.MONGODB_COLLECTION}`)
     .findOne({ id: productId });
