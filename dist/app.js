@@ -14,38 +14,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 require("dotenv").config();
+const cors = require("cors");
 const express_1 = __importDefault(require("express"));
 const mongoDB_1 = require("./DB/mongoDB");
 const port = process.env.PORT;
 exports.app = (0, express_1.default)();
+exports.app.use(cors());
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.static("public"));
-exports.app.get("/api/milks", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { page, limit } = req.query;
-    if (!page)
-        page = "1";
-    if (!limit)
-        limit = "9";
-    const skip = (Number(page) - 1) * Number(limit);
-    const milks = yield (0, mongoDB_1.getAllMilks)(skip, Number(limit));
-    if (!milks) {
-        return res.status(404).json({ error: "Milks not found" });
+exports.app.get("/api/products", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // let { page, limit } = req.query;
+    // if (!page) page = "1";
+    // if (!limit) limit = "9";
+    // const skip: number = (Number(page) - 1) * Number(limit);
+    // const products = await getAllProducts(skip, Number(limit));
+    const products = yield (0, mongoDB_1.getAllProducts)();
+    if (!products) {
+        return res.status(404).json({ error: "Product not found" });
     }
     return res.status(200).json({
-        page: page,
-        limit: limit,
-        data: milks,
+        // page: page,
+        // limit: limit,
+        products: products,
         defaultImage: `http://localhost:${port}/images/milk.png`,
     });
 }));
-exports.app.get("/api/milks/:milkId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const milkId = req.params.milkId;
-    const milk = yield (0, mongoDB_1.getMilk)(milkId);
-    if (!milk) {
-        return res.status(404).json({ error: "Milk not found" });
+exports.app.get("/api/products/:productId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const productId = req.params.productId;
+    const product = yield (0, mongoDB_1.getProduct)(productId);
+    if (!product) {
+        return res.status(404).json({ error: "Product not found" });
     }
     return res.status(200).json({
-        data: milk,
+        product: product,
         defaultImage: `http://localhost:${port}/images/milk.png`,
     });
 }));

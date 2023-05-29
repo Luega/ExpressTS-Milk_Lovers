@@ -9,26 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMilk = exports.getAllMilks = exports.mongoClient = void 0;
+exports.getProduct = exports.getAllProducts = exports.mongoClient = void 0;
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
 exports.mongoClient = new MongoClient(`${process.env.CONNECTION_STRING_MONGODB}`);
-const getAllMilks = (skip, limit) => __awaiter(void 0, void 0, void 0, function* () {
-    const milks = yield exports.mongoClient
+const getAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
+    const products = yield exports.mongoClient
         .db(`${process.env.MONGODB_DB}`)
         .collection(`${process.env.MONGODB_COLLECTION}`)
         .find()
-        .skip(skip)
-        .limit(limit)
+        // .skip(skip)
+        // .limit(limit)
         .toArray();
-    return milks;
+    return products;
 });
-exports.getAllMilks = getAllMilks;
-const getMilk = (milkId) => __awaiter(void 0, void 0, void 0, function* () {
-    const milk = yield exports.mongoClient
+exports.getAllProducts = getAllProducts;
+const getProduct = (productId) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield exports.mongoClient
         .db(`${process.env.MONGODB_DB}`)
         .collection(`${process.env.MONGODB_COLLECTION}`)
-        .findOne({ id: milkId });
-    return milk;
+        .findOne({ id: productId });
+    return product;
 });
-exports.getMilk = getMilk;
+exports.getProduct = getProduct;

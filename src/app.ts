@@ -1,43 +1,46 @@
 require("dotenv").config();
+const cors = require("cors");
 import express, { Request, Response } from "express";
-import { getAllMilks, getMilk } from "./DB/mongoDB";
+import { getAllProducts, getProduct } from "./DB/mongoDB";
 
 const port = process.env.PORT;
 
 export const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-app.get("/api/milks", async (req: Request, res: Response) => {
-  let { page, limit } = req.query;
-  if (!page) page = "1";
-  if (!limit) limit = "9";
-  const skip: number = (Number(page) - 1) * Number(limit);
+app.get("/api/products", async (req: Request, res: Response) => {
+  // let { page, limit } = req.query;
+  // if (!page) page = "1";
+  // if (!limit) limit = "9";
+  // const skip: number = (Number(page) - 1) * Number(limit);
 
-  const milks = await getAllMilks(skip, Number(limit));
+  // const products = await getAllProducts(skip, Number(limit));
+  const products = await getAllProducts();
 
-  if (!milks) {
-    return res.status(404).json({ error: "Milks not found" });
+  if (!products) {
+    return res.status(404).json({ error: "Product not found" });
   }
 
   return res.status(200).json({
-    page: page,
-    limit: limit,
-    data: milks,
+    // page: page,
+    // limit: limit,
+    products: products,
     defaultImage: `http://localhost:${port}/images/milk.png`,
   });
 });
 
-app.get("/api/milks/:milkId", async (req: Request, res: Response) => {
-  const milkId = req.params.milkId;
-  const milk = await getMilk(milkId);
+app.get("/api/products/:productId", async (req: Request, res: Response) => {
+  const productId = req.params.productId;
+  const product = await getProduct(productId);
 
-  if (!milk) {
-    return res.status(404).json({ error: "Milk not found" });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
   }
 
   return res.status(200).json({
-    data: milk,
+    product: product,
     defaultImage: `http://localhost:${port}/images/milk.png`,
   });
 });

@@ -1,31 +1,30 @@
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
-import { Milk } from "../types-interfaces";
+import { Product } from "../types-interfaces";
 
 export const mongoClient: typeof MongoClient = new MongoClient(
   `${process.env.CONNECTION_STRING_MONGODB}`
 );
 
-export const getAllMilks = async (
-  skip: number,
-  limit: number
-): Promise<Milk[]> => {
-  const milks: Milk[] = await mongoClient
+export const getAllProducts = async (): // skip: number,
+// limit: number
+Promise<Product[]> => {
+  const products: Product[] = await mongoClient
     .db(`${process.env.MONGODB_DB}`)
     .collection(`${process.env.MONGODB_COLLECTION}`)
     .find()
-    .skip(skip)
-    .limit(limit)
+    // .skip(skip)
+    // .limit(limit)
     .toArray();
 
-  return milks;
+  return products;
 };
 
-export const getMilk = async (milkId: string): Promise<Milk> => {
-  const milk: Milk = await mongoClient
+export const getProduct = async (productId: string): Promise<Product> => {
+  const product: Product = await mongoClient
     .db(`${process.env.MONGODB_DB}`)
     .collection(`${process.env.MONGODB_COLLECTION}`)
-    .findOne({ id: milkId });
+    .findOne({ id: productId });
 
-  return milk;
+  return product;
 };

@@ -1,4 +1,4 @@
-export interface Milk {
+export interface Product {
   id: string;
   name: string;
   type: string;
