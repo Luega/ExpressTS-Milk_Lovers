@@ -20,17 +20,25 @@ const port = process.env.PORT;
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.static("public"));
-exports.app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const milks = yield (0, mongoDB_1.getAllMilks)();
+exports.app.get("/api/milks", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let { page, limit } = req.query;
+    if (!page)
+        page = "1";
+    if (!limit)
+        limit = "9";
+    const skip = (Number(page) - 1) * Number(limit);
+    const milks = yield (0, mongoDB_1.getAllMilks)(skip, Number(limit));
     if (!milks) {
         return res.status(404).json({ error: "Milks not found" });
     }
     return res.status(200).json({
+        page: page,
+        limit: limit,
         data: milks,
         defaultImage: `http://localhost:${port}/images/milk.png`,
     });
 }));
-exports.app.get("/:milkId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.app.get("/api/milks/:milkId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const milkId = req.params.milkId;
     const milk = yield (0, mongoDB_1.getMilk)(milkId);
     if (!milk) {
@@ -41,3 +49,6 @@ exports.app.get("/:milkId", (req, res) => __awaiter(void 0, void 0, void 0, func
         defaultImage: `http://localhost:${port}/images/milk.png`,
     });
 }));
+exports.app.use("*", (_req, res) => {
+    return res.status(404).json({ error: "Page not found" });
+});

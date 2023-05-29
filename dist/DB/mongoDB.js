@@ -12,27 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMilk = exports.getAllMilks = exports.mongoClient = void 0;
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
-const milks_1 = require("./milks");
 exports.mongoClient = new MongoClient(`${process.env.CONNECTION_STRING_MONGODB}`);
-// START - SEEDER - DELETE THIS SECTION IF YOU WANT TO WORK WITH YOUR DATA
-const milksSeeder = milks_1.dbMilks;
-const uploadSeederData = (seeder) => __awaiter(void 0, void 0, void 0, function* () {
-    yield exports.mongoClient
-        .db(`${process.env.MONGODB_DB}`)
-        .collection(`${process.env.MONGODB_COLLECTION}`)
-        .deleteMany({});
-    yield exports.mongoClient
-        .db(`${process.env.MONGODB_DB}`)
-        .collection(`${process.env.MONGODB_COLLECTION}`)
-        .insertMany(seeder);
-});
-uploadSeederData(milksSeeder);
-// END - SEEDER
-const getAllMilks = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllMilks = (skip, limit) => __awaiter(void 0, void 0, void 0, function* () {
     const milks = yield exports.mongoClient
         .db(`${process.env.MONGODB_DB}`)
         .collection(`${process.env.MONGODB_COLLECTION}`)
         .find()
+        .skip(skip)
+        .limit(limit)
         .toArray();
     return milks;
 });
