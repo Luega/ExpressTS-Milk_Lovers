@@ -12,7 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProduct = exports.getAllProducts = exports.mongoClient = void 0;
 require("dotenv").config();
 const { MongoClient } = require("mongodb");
+const mockData_1 = require("./mockData");
 exports.mongoClient = new MongoClient(`${process.env.CONNECTION_STRING_MONGODB}`);
+const products = mockData_1.mockData;
+const productSeeder = products.map((product) => (Object.assign(Object.assign({}, product), { literPrice: Math.floor(Math.random() * 30 + 1) })));
+const uploadSeederData = (seeder) => __awaiter(void 0, void 0, void 0, function* () {
+    yield exports.mongoClient
+        .db(`${process.env.MONGODB_DB}`)
+        .collection(`${process.env.MONGODB_COLLECTION}`)
+        .deleteMany({});
+    yield exports.mongoClient
+        .db(`${process.env.MONGODB_DB}`)
+        .collection(`${process.env.MONGODB_COLLECTION}`)
+        .insertMany(seeder);
+});
+uploadSeederData(productSeeder);
 const getAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield exports.mongoClient
         .db(`${process.env.MONGODB_DB}`)
