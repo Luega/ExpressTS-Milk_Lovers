@@ -53,3 +53,4 @@ exports.app.get("/api/products/:productId", (req, res) => __awaiter(void 0, void
 exports.app.use("*", (_req, res) => {
     return res.status(404).json({ error: "Page not found" });
 });
+//# sourceMappingURL=app.js.map

@@ -46,3 +46,4 @@ const getProduct = (productId) => __awaiter(void 0, void 0, void 0, function* ()
     return product;
 });
 exports.getProduct = getProduct;
+//# sourceMappingURL=mongoDB.js.map
