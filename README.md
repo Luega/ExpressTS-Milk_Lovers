@@ -4,9 +4,8 @@ This API is specifically designed to serve data for [the Milk Lovers E-Commerce 
 
 ## Table of Contents
 
-- [Features](#Features)
+- [Endpoints](#Endpoints)
 - [Installation](#Installation)
-- [Project Structure](#ProjectStructure)
 - [Dependencies](#Dependencies)
 - [License](#license)
 
