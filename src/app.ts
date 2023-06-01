@@ -48,3 +48,5 @@ app.get("/api/products/:productId", async (req: Request, res: Response) => {
 app.use("*", (_req: Request, res: Response) => {
   return res.status(404).json({ error: "Page not found" });
 });
+
+module.exports = app;
