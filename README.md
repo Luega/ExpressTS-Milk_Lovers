@@ -61,7 +61,7 @@ MONGODB_COLLECTION: The name of the collection within the MongoDB database.
 5. Run the API server using:
 
 ```bash
-  npm run dev
+  npm run start
 ```
 
 6. The server will start running on the specified port, and you can now make requests to the defined endpoints.
